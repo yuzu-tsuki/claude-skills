@@ -1,6 +1,6 @@
 # `token-saver` — guide
 
-Human documentation. Not loaded during a run; `SKILL.md` is the only file the skill executes.
+Human documentation. Not loaded during a run; a run executes `SKILL.md`, plus `paths.md` on the `review-fix:` / `no-commit:` paths.
 한국어: `GUIDE.ko.md` — identical content; a change to one must be applied to the other.
 
 ## What it is
