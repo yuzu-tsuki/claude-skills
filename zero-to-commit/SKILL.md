@@ -1,10 +1,10 @@
 ---
-name: token-saver
+name: zero-to-commit
 description: Orchestrate one slice of work through the project's agent presets — architect blueprints, implementer codes, logic-auditor reviews adversarially, architect dispositions — looping until converged, then the commit ritual. Use when starting implementation of a picked slice on its feature branch, or when working MR reviewer feedback back into the branch. Flags: simple: (skip blueprint), review-fix: (MR feedback), opus-architect: (design on opus), no-commit: (verify but don't commit).
 argument-hint: "[simple:] [review-fix:] [opus-architect:] [no-commit:] <slice description>"
 ---
 
-# Token saver
+# Zero to commit
 
 Run the slice through the `.claude/agents/` presets. Copies of those presets are bundled in
 `agents/` next to this file so the skill can be shared as one unit — see `agents/README.md` for
@@ -24,8 +24,8 @@ These mechanics apply to every step:
 
 Read the invocation arguments before anything else. Flags are colon-suffixed words at the front of the argument string, may appear in any order, and everything after the last flag is the slice description.
 
-- **`simple:`** (equivalent form: `small:`; e.g. `/token-saver simple: fix the off-by-one in journal compaction`) — take the fast path: skip step 1 and launch a single implementer with the slice statement, then run steps 3–6 unchanged.
-- **`review-fix:`** (e.g. `/token-saver review-fix: MR !35 3차 리뷰 반영`) — the MR-feedback path: read `paths.md` next to this file before anything else and follow its review-fix section. Steps 1–2 are replaced by fetch-and-disposition; the auditor and gatekeeper still run.
+- **`simple:`** (equivalent form: `small:`; e.g. `/zero-to-commit simple: fix the off-by-one in journal compaction`) — take the fast path: skip step 1 and launch a single implementer with the slice statement, then run steps 3–6 unchanged.
+- **`review-fix:`** (e.g. `/zero-to-commit review-fix: MR !35 3차 리뷰 반영`) — the MR-feedback path: read `paths.md` next to this file before anything else and follow its review-fix section. Steps 1–2 are replaced by fetch-and-disposition; the auditor and gatekeeper still run.
 - **`opus-architect:`** (equivalent forms: `cheap-architect:`, `architect-v2:`) — run step 1 and every later disposition round on the `architect-v2` preset (opus, effort max) instead of `architect` (fable-5). Use it on the cheaper plan tiers, which do not include Fable model access. Substitute the preset wherever these instructions say `architect`; nothing else about the loop changes. Never launch both design presets on the same slice — one design authority per slice, or the blueprint has two owners.
 - **`no-commit:`** — the user wants the work implemented and verified but not committed. Read `paths.md` next to this file for the step-by-step substitutions. Steps 1–4 run unchanged; step 5 replaces every git write with a scratchpad draft; step 6 still runs, with commit-shape checks marked N/A. Verification is never reduced by this flag — only the git writes are.
 - **No flag** — full path on the `architect` preset, step 1 onward.

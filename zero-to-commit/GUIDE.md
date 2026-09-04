@@ -1,4 +1,4 @@
-# `token-saver` — guide
+# `zero-to-commit` — guide
 
 Human documentation. Not loaded during a run; a run executes `SKILL.md`, plus `paths.md` on the `review-fix:` / `no-commit:` paths.
 한국어: `GUIDE.ko.md` — identical content; a change to one must be applied to the other.
@@ -10,6 +10,12 @@ on complex engineering. The main session never designs, codes, or reviews — it
 presets, runs each round's single warm build, and adjudicates; the heavy reasoning runs on scoped
 presets, each on the cheapest model that can own its surface. Every handoff is a file in the
 session scratchpad.
+
+## Invoking
+
+`/zero-to-commit <flags> <slice>`, or `/ztc <flags> <slice>` — the same run either way. `/ztc` is a
+one-line command in `commands/`, installed alongside the skill (`agents/README.md`); without it only
+the full name resolves.
 
 ## Pipeline
 

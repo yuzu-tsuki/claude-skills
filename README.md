@@ -1,7 +1,8 @@
 # Claude skill library
 
 Skills for Claude Code. Each folder is one self-contained skill: `SKILL.md` is what runs,
-`GUIDE.md` is the human documentation, `agents/` holds any agent presets it needs.
+`GUIDE.md` is the human documentation, `agents/` holds any agent presets it needs, and `commands/`
+holds any short slash-command aliases.
 
 | Skill | What it does |
 |---|---|
@@ -13,5 +14,7 @@ The main session designs, codes, or reviews nothing. It routes the slice between
 presets — architect, implementer, auditor, gatekeeper — runs each round's single build, and
 adjudicates the findings, looping until the review converges and then committing. Every handoff
 is a file, so the final gate verifies evidence on disk rather than a summary.
+
+Invoke it as `/zero-to-commit`, or `/ztc` once `commands/ztc.md` is installed.
 
 Details, flags, and install steps: [`zero-to-commit/GUIDE.md`](zero-to-commit/GUIDE.md).

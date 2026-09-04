@@ -1,4 +1,4 @@
-# Agent presets for `token-saver`
+# Agent presets for `zero-to-commit`
 
 Usage guide: `../GUIDE.md` · 한국어 `../GUIDE.ko.md`.
 
@@ -11,11 +11,14 @@ installing up front (below) is the reliable path.
 ## Install
 
 ```
-cp .claude/skills/token-saver/agents/*.md  <target-repo>/.claude/agents/
-cp -r .claude/skills/token-saver           <target-repo>/.claude/skills/
+cp .claude/skills/zero-to-commit/agents/*.md    <target-repo>/.claude/agents/
+cp .claude/skills/zero-to-commit/commands/*.md  <target-repo>/.claude/commands/
+cp -r .claude/skills/zero-to-commit             <target-repo>/.claude/skills/
 ```
 
-Drop `README.md` from the `agents/` copy — it is documentation, not a preset.
+Drop `README.md` from the `agents/` copy — it is documentation, not a preset. The `commands/` copy
+is optional: it installs `/ztc` as a short alias for `/zero-to-commit`, and the skill runs the same
+either way.
 
 No other skill is required: step 5's commit ritual is built into `SKILL.md`. If the target repo has
 its own finishing skill (the source repo's is named `subtask-done`), step 5 delegates to it instead.

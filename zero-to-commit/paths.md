@@ -1,4 +1,4 @@
-# token-saver — path details
+# zero-to-commit — path details
 
 Loaded on demand, not with `SKILL.md`: read this file in full before step 0 whenever the
 invocation carries `review-fix:` or `no-commit:`, or combines two or more flags. Everything here
