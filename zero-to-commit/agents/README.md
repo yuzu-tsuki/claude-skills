@@ -29,7 +29,7 @@ its own finishing skill (the source repo's is named `subtask-done`), step 5 dele
 |---|---|---|
 | `architect` | fable-5 / high | Step 1 blueprint; step 4 disposition |
 | `architect-v2` | opus / max | Same brief, for plan tiers without Fable access (`opus-architect:`) |
-| `implementer` | sonnet / high | Step 2 code and unit tests; no shell — the orchestrator builds warm and tests once per round |
+| `implementer` | sonnet / high | Step 2 code and unit tests; Bash for `-fsyntax-only` self-checks only — the orchestrator builds warm and tests once per round |
 | `logic-auditor` | opus / xhigh | Step 3 adversarial review; delta passes |
 | `docs-conformance` | sonnet / high | Step 3, docs surface only (SSOT / ICD / tracker) |
 | `gatekeeper` | sonnet / high | Step 6 process verification before a commit-ready callout |

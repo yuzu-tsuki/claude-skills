@@ -22,7 +22,7 @@ the full name resolves.
 | Step | Preset | Output |
 |---|---|---|
 | 1 | `architect` | `blueprint.md` — files, seams, data shapes, test plan, non-goals, cited decision IDs |
-| 2 | `implementer` | Code + unit tests. Never builds or runs anything (no shell); the orchestrator builds warm and tests once per round |
+| 2 | `implementer` | Code + unit tests. Has Bash for `-fsyntax-only` self-checks only, never the build system; the orchestrator builds warm and tests once per round |
 | 3 | `logic-auditor` (+ `docs-conformance`) | `findings-r<n>.md` — ID'd defects with failure scenarios |
 | 4 | `architect` | `dispositions-r<n>.md` — every ID becomes fix / defer / invalid |
 | 5 | *(commit ritual)* | Gates once, tracker, commits — built in; delegates to a project finishing skill when one exists |
@@ -78,12 +78,23 @@ Prose instead of a flag is honored — say which flag you read it as.
   teammates. Continue one with `SendMessage` to its id.
 - **A round closes only when every reviewer launched for it has delivered.** Do not start the gates
   while any reviewer of the round is still outstanding.
-- **Use the reviewer wait.** Draft the tracker section, reply skeleton, and commit messages while the
-  auditor runs; mark them pending-verification and reconcile when findings land.
-- **One build point per round, owned by the orchestrator.** Implementers have no shell; the
-  orchestrator builds incrementally in the existing tree (never clean or reconfigure inside the
-  loop) and sends failures back as one batch. One rebuild per fix-batch; three failed round-trips
-  on the same failure go to the user. Comment-only changes do not need a build at all.
+- **Use the reviewer wait, but only for findings-invariant drafts.** Mechanical tracker fields, the
+  reply skeleton, and commit messages for already-verified fixes are safe to draft while the auditor
+  runs; a mutation list or anything else that depends on the findings is not — mark drafts
+  pending-verification and reconcile when findings land.
+- **One build point per round, owned by the orchestrator.** Implementers have Bash but never run the
+  build system (concurrent runs would race in the shared build dir) — they self-check with
+  `-fsyntax-only` instead. The orchestrator builds incrementally in the existing tree (never clean or
+  reconfigure inside the loop), runs the repo's per-function static checks on new code at this same
+  point, and sends failures back as one batch. One rebuild per fix-batch; three failed round-trips on
+  the same failure go to the user. Comment-only changes do not need a build at all.
+- **Parallel implementers run in worktree isolation.** PARALLEL-SAFE packages are normally disjoint
+  file sets, but the blueprint may instead grant disjoint, append-only ranges within one shared file
+  when packages separate along a different axis (declarations / impls / tests). Either way, each
+  parallel implementer launches with `isolation: 'worktree'`; the orchestrator merges each worktree's
+  changes into the live tree (into its declared range, for range-owned packages) before the round's
+  single warm build. This costs a cold configure per worktree — the round's own build point stays one
+  warm, incremental build regardless.
 - **Verify agent claims against source** before acting on them — in both directions: a defect
   called clean and a clean line called defective.
 
