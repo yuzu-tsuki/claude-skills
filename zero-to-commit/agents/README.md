@@ -33,7 +33,6 @@ its own finishing skill (the source repo's is named `subtask-done`), step 5 dele
 | `logic-auditor` | opus / xhigh | Step 3 adversarial review; delta passes |
 | `docs-conformance` | sonnet / high | Step 3, docs surface only (SSOT / ICD / tracker) |
 | `gatekeeper` | sonnet / high | Step 6 process verification before a commit-ready callout |
-| `quick-question` | haiku / medium | Side lookups that must not disturb an in-flight agent |
 
 ## Repo-specific content to adapt
 

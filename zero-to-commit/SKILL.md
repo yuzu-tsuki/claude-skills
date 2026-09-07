@@ -40,7 +40,7 @@ The auditor and gatekeeper are **never** skipped on any path — ceremony scales
 
 ## 0. Preconditions
 
-- **Presets installed.** Check `.claude/agents/` for the seven preset files this skill launches (`architect`, `architect-v2`, `implementer`, `logic-auditor`, `docs-conformance`, `gatekeeper`, `quick-question`). Copy any missing one there from the bundled `agents/` folder next to this file — copy only, **never overwrite an existing name** (it may be the user's own preset; report the skip instead), and never copy `README.md`. A preset copied mid-session may not be launchable until a new session: if the next launch still fails with an unknown agent type, stop and tell the user to restart the session once — the install holds from then on. When you copied into a repo other than the skill's home, add one line that the briefs carry repo-specific content to adapt (`agents/README.md` lists it).
+- **Presets installed.** Check `.claude/agents/` for the six preset files this skill launches (`architect`, `architect-v2`, `implementer`, `logic-auditor`, `docs-conformance`, `gatekeeper`). Copy any missing one there from the bundled `agents/` folder next to this file — copy only, **never overwrite an existing name** (it may be the user's own preset; report the skip instead), and never copy `README.md`. A preset copied mid-session may not be launchable until a new session: if the next launch still fails with an unknown agent type, stop and tell the user to restart the session once — the install holds from then on. When you copied into a repo other than the skill's home, add one line that the briefs carry repo-specific content to adapt (`agents/README.md` lists it).
 - The user has picked the slice and the work happens on a `features/*` branch off `develop` (create with `--no-track` per CLAUDE.md §2 if it doesn't exist yet).
 - State the slice in one or two sentences before launching anything; if the slice itself is ambiguous, ask the user first — agents inherit your framing.
 
@@ -117,4 +117,4 @@ Before declaring the result commit-ready in the checkpoint report — **on every
 
 ## Quick lookups
 
-`quick-question` (read-only, fast) answers trivial or context-breaking lookups at any point without disturbing the loop — use it instead of derailing an in-flight agent.
+Answer side lookups yourself rather than derailing an in-flight agent. When a lookup would pull a large file into your context, hand it to the built-in `Explore` agent and take back only the verdict.
