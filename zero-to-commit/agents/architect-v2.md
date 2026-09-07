@@ -2,7 +2,7 @@
 name: architect-v2
 description: Opus-based design authority — identical brief to the architect preset, for the cheaper plan tiers that do not include Fable model access. Selected by the opus-architect flag in the zero-to-commit invocation; never run alongside the architect on the same slice.
 model: opus
-effort: max
+effort: high
 tools:
   - Read
   - Glob

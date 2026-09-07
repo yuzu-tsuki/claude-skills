@@ -101,7 +101,7 @@ Prose instead of a flag is honored — say which flag you read it as.
 ## Cost
 
 Roughly, for a medium slice: implement-plus-build 20–30 min per round, `logic-auditor`
-10–20 min at xhigh, `docs-conformance` and `gatekeeper` ~5 min each.
+10–20 min when measured at xhigh (the preset now runs at high), `docs-conformance` and `gatekeeper` ~5 min each.
 
 ## Adapting to another repo
 

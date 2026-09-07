@@ -96,7 +96,7 @@ English: `GUIDE.md` — 동일 내용; 한쪽을 고치면 다른 쪽도 고칠 
 
 ## 비용
 
-중간 규모 슬라이스 기준 대략: 구현+빌드 회차당 20~30분, `logic-auditor` xhigh 10~20분,
+중간 규모 슬라이스 기준 대략: 구현+빌드 회차당 20~30분, `logic-auditor` 10~20분(xhigh 기준 측정, 현재 프리셋은 high),
 `docs-conformance`·`gatekeeper` 각 5분 안팎.
 
 ## 다른 저장소로 옮길 때

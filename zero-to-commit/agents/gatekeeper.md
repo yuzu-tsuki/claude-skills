@@ -2,7 +2,7 @@
 name: gatekeeper
 description: Use to verify process completion before any commit-ready or MR-ready callout — checks branch state, rebase freshness, full-gate evidence, commit shape, and that the adversarial review actually happened. Read-only; reports pass/fail per check.
 model: sonnet
-effort: high
+effort: medium
 tools:
   - Read
   - Glob
