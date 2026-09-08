@@ -25,7 +25,7 @@ the full name resolves.
 | 2 | `implementer` | Code + unit tests. Has Bash for `-fsyntax-only` self-checks only, never the build system; the orchestrator builds warm and tests once per round |
 | 3 | `logic-auditor` (+ `docs-conformance`) | `findings-r<n>.md` — ID'd defects with failure scenarios |
 | 4 | `architect` | `dispositions-r<n>.md` — every ID becomes fix / defer / invalid |
-| 5 | *(commit ritual)* | Gates once, tracker, commits — built in; delegates to a project finishing skill when one exists |
+| 5 | *(commit ritual)* | Tracker first, then gates once, then commits — built in; delegates to a project finishing skill when one exists |
 | 6 | `gatekeeper` | Pass/fail per check against disk and git, never against claims |
 
 Steps 2–4 loop. Steps 5–6 run once.
@@ -95,13 +95,44 @@ Prose instead of a flag is honored — say which flag you read it as.
   changes into the live tree (into its declared range, for range-owned packages) before the round's
   single warm build. This costs a cold configure per worktree — the round's own build point stays one
   warm, incremental build regardless.
+- **Cut at coupling boundaries, never at commit boundaries.** Coupling is a different question from
+  parallel-safety: packages are coupled when a defect can live in the seam between them, and they
+  are often file-disjoint yet coupled. Coupled packages stay in one review scope and one loop —
+  commit one before its sibling exists and no reviewer ever holds both halves of the seam.
+- **Size each agent between two bounds.** Cap a task at ~60 tool calls (an agent's cost tracks its
+  call count), but never split below the ~80–120k per-launch orientation floor. Briefs point at
+  artifacts and never restate them.
+- **Never message a reviewer mid-pass.** It restarts the report rather than augmenting it.
+  Everything goes in the launch brief — including the round's diff, pre-written to the scratchpad —
+  and corrections wait for the delta brief.
+- **Finish every edit before the evidence run.** Gate logs are evidence for the tree as it stands,
+  so a tracker correction made afterward invalidates them all. The test runner, not a list, is the
+  authority on what the gates are: run the full suite, never a `-R` subset.
 - **Verify agent claims against source** before acting on them — in both directions: a defect
-  called clean and a clean line called defective.
+  called clean and a clean line called defective. Every figure you cite comes out of a log, never
+  out of memory.
 
 ## Cost
 
-Roughly, for a medium slice: implement-plus-build 20–30 min per round, `logic-auditor`
-10–20 min when measured at xhigh (the preset now runs at high), `docs-conformance` and `gatekeeper` ~5 min each.
+Two full-path runs, measured: **~2.9–3.0M subagent tokens, 135–170 min wall, 14 distinct agents**,
+~30 files and ~4,000 insertions each. Tokens go to implementers ~52%, reviewers ~31%, architect ~7%,
+gatekeeper ~4%.
+
+The shape that matters:
+
+- **An agent's cost tracks its tool-call count and nothing else.** Every call re-sends the whole
+  accumulated context, so cost inside one agent grows as `1+2+…+n` while the per-call rate stays
+  flat at 2–4k tokens. Capping a task is the only real token lever.
+- **Every launch pays an orientation floor of ~80–120k**, whatever the task size — a two-file fix
+  still cost 79k, because it must read the disposition, findings, targets, and sibling conventions
+  regardless. Splitting below that floor multiplies fixed cost.
+- **Subagents are already context-flushed between launches**, so flushing more often does not help
+  where the tokens actually are. Cutting a slice into micro-commits costs *more* once each extra
+  commit-ready point's gate run and gatekeeper pass are counted — and it ships seam defects.
+
+Wall-clock for a medium slice: implement-plus-build 20–30 min per round, `logic-auditor` 10–20 min
+when measured at xhigh (the preset now runs at high), `docs-conformance` and `gatekeeper` ~5 min
+each. Overshoot is usually findings volume and user-decision pauses — correctness work, not overhead.
 
 ## Adapting to another repo
 
