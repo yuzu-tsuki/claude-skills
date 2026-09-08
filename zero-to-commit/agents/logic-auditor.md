@@ -2,7 +2,7 @@
 name: logic-auditor
 description: Use for deep code review, security audits, and diagnosing subtle logic bugs.
 model: opus
-effort: xhigh
+effort: high
 tools:
   - Read
   - Glob

@@ -1,4 +1,4 @@
-# Agent presets for `token-saver`
+# Agent presets for `zero-to-commit`
 
 Usage guide: `../GUIDE.md` · 한국어 `../GUIDE.ko.md`.
 
@@ -11,11 +11,14 @@ installing up front (below) is the reliable path.
 ## Install
 
 ```
-cp .claude/skills/token-saver/agents/*.md  <target-repo>/.claude/agents/
-cp -r .claude/skills/token-saver           <target-repo>/.claude/skills/
+cp .claude/skills/zero-to-commit/agents/*.md    <target-repo>/.claude/agents/
+cp .claude/skills/zero-to-commit/commands/*.md  <target-repo>/.claude/commands/
+cp -r .claude/skills/zero-to-commit             <target-repo>/.claude/skills/
 ```
 
-Drop `README.md` from the `agents/` copy — it is documentation, not a preset.
+Drop `README.md` from the `agents/` copy — it is documentation, not a preset. The `commands/` copy
+is optional: it installs `/ztc` as a short alias for `/zero-to-commit`, and the skill runs the same
+either way.
 
 No other skill is required: step 5's commit ritual is built into `SKILL.md`. If the target repo has
 its own finishing skill (the source repo's is named `subtask-done`), step 5 delegates to it instead.
@@ -25,12 +28,11 @@ its own finishing skill (the source repo's is named `subtask-done`), step 5 dele
 | Preset | Model / effort | Role in the loop |
 |---|---|---|
 | `architect` | fable-5 / high | Step 1 blueprint; step 4 disposition |
-| `architect-v2` | opus / max | Same brief, for plan tiers without Fable access (`opus-architect:`) |
-| `implementer` | sonnet / high | Step 2 code and unit tests; no shell — the orchestrator builds warm and tests once per round |
-| `logic-auditor` | opus / xhigh | Step 3 adversarial review; delta passes |
+| `architect-v2` | opus / high | Same brief, for plan tiers without Fable access (`opus-architect:`) |
+| `implementer` | sonnet / high | Step 2 code and unit tests; Bash for `-fsyntax-only` self-checks only — the orchestrator builds warm and tests once per round |
+| `logic-auditor` | opus / high | Step 3 adversarial review; delta passes |
 | `docs-conformance` | sonnet / high | Step 3, docs surface only (SSOT / ICD / tracker) |
-| `gatekeeper` | sonnet / high | Step 6 process verification before a commit-ready callout |
-| `quick-question` | haiku / medium | Side lookups that must not disturb an in-flight agent |
+| `gatekeeper` | sonnet / medium | Step 6 process verification before a commit-ready callout |
 
 ## Repo-specific content to adapt
 
