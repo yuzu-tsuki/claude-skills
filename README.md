@@ -10,10 +10,11 @@ holds any short slash-command aliases.
 
 ## zero-to-commit
 
-The main session designs, codes, or reviews nothing. It routes the slice between scoped agent
-presets — architect, implementer, auditor, gatekeeper — runs each round's single build, and
-adjudicates the findings, looping until the review converges and then committing. Every handoff
-is a file, so the final gate verifies evidence on disk rather than a summary.
+The user and the main session draft the blueprint; after that the main session codes and reviews
+nothing. It routes the slice between scoped agent presets — architect (reviews the blueprint),
+implementer, auditor, gatekeeper — runs each round's single build, and adjudicates the findings,
+looping until the review converges and then committing. Every handoff is a file, so the final gate
+verifies evidence on disk rather than a summary.
 
 Invoke it as `/zero-to-commit`, or `/ztc` once `commands/ztc.md` is installed.
 

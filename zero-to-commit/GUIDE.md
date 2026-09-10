@@ -6,10 +6,10 @@ Human documentation. Not loaded during a run; a run executes `SKILL.md`, plus `p
 ## What it is
 
 An orchestration loop for one slice of work, built to spend as few main-session tokens as possible
-on complex engineering. The main session never designs, codes, or reviews — it routes between
-presets, runs each round's single warm build, and adjudicates; the heavy reasoning runs on scoped
-presets, each on the cheapest model that can own its surface. Every handoff is a file in the
-session scratchpad.
+on complex engineering. The main session drafts the blueprint with the user, then never codes or
+reviews — it routes between presets, runs each round's single warm build, and adjudicates; the
+heavy reasoning runs on scoped presets, each on the cheapest model that can own its surface. Every
+handoff is a file in the session scratchpad.
 
 ## Invoking
 
@@ -21,8 +21,8 @@ the full name resolves.
 
 | Step | Preset | Output |
 |---|---|---|
-| 1 | `architect` | `blueprint.md` — files, seams, data shapes, test plan, non-goals, cited decision IDs |
-| 2 | `implementer` | Code + unit tests. Has Bash for `-fsyntax-only` self-checks only, never the build system; the orchestrator builds warm and tests once per round |
+| 1 | *(user + orchestrator)*, then `architect` | `blueprint-draft.md` — the user's decisions in whatever shape the slice needs: files, seams, data shapes, error handling, non-goals; then `blueprint.md` — the architect's refinement: cited decision IDs, test plan, packages, coupling, plus a change list whose design-change lane goes back to the user |
+| 2 | `implementer` | Code + unit tests. Builds its own targets and runs its own test binaries in its tree as self-checks (never configure, clean, `all`, or `ctest`); the orchestrator builds warm and tests once per round as the evidence run |
 | 3 | `logic-auditor` (+ `docs-conformance`) | `findings-r<n>.md` — ID'd defects with failure scenarios |
 | 4 | `architect` | `dispositions-r<n>.md` — every ID becomes fix / defer / invalid |
 | 5 | *(commit ritual)* | Tracker first, then gates once, then commits — built in; delegates to a project finishing skill when one exists |
@@ -37,12 +37,26 @@ Steps 2–4 loop. Steps 5–6 run once.
 | *(none)* | Full path from step 1 |
 | `simple:` | Skip the blueprint; single implementer; orchestrator dispositions findings inline. Auditor and gatekeeper still run |
 | `review-fix:` | MR-feedback path. Replaces steps 1–2 with fetch-and-disposition |
-| `opus-architect:` | Design on `architect-v2` (opus) instead of `architect` (fable-5) |
+| `opus-architect:` | Blueprint review and dispositions on `architect-v2` (opus) instead of `architect` (fable-5) |
 | `no-commit:` | Full verification, no git writes — tracker and commit messages become scratchpad drafts; gatekeeper marks commit-shape checks N/A. Excludes `review-fix:` |
 
 Prose instead of a flag is honored — say which flag you read it as.
 
 ## Rules
+
+### The user owns the design; the architect owns the mechanics
+
+- The blueprint is drafted by the user and the orchestrator together, in whatever shape the slice
+  needs — there is no template — and written to `blueprint-draft.md` before any agent launches, so
+  the architect reviews the text the user saw. Every question the docs do not settle is put to the
+  user before the review launches.
+- The architect **reviews** the draft. Its report has two lanes, always both: **refinements** it
+  applies itself (decision-ID citations, invariant checks, test plan, package partition, coupling,
+  implementer-grade wording) and **design changes** it may only propose (a different seam, a changed
+  non-goal, a scope change, a contradiction with the SSOT). A proposed change goes to the user; the
+  ruling goes back to the same architect. Nothing in the design lane is ever accepted silently.
+- The split moves the orientation cost from designing to verifying, and leaves a blueprint the user
+  can defend. A design authored by a session-scoped agent has no owner once the session ends.
 
 ### Review scope narrows monotonically
 
@@ -82,12 +96,20 @@ Prose instead of a flag is honored — say which flag you read it as.
   reply skeleton, and commit messages for already-verified fixes are safe to draft while the auditor
   runs; a mutation list or anything else that depends on the findings is not — mark drafts
   pending-verification and reconcile when findings land.
-- **One build point per round, owned by the orchestrator.** Implementers have Bash but never run the
-  build system (concurrent runs would race in the shared build dir) — they self-check with
-  `-fsyntax-only` instead. The orchestrator builds incrementally in the existing tree (never clean or
-  reconfigure inside the loop), runs the repo's per-function static checks on new code at this same
-  point, and sends failures back as one batch. One rebuild per fix-batch; three failed round-trips on
-  the same failure go to the user. Comment-only changes do not need a build at all.
+- **Implementers self-check by building and running; the orchestrator owns the round's evidence run.**
+  An implementer builds only its own targets, incrementally, in the tree it was launched in (its
+  worktree on a fanned-out round, the live tree when it is alone), runs the test binaries it wrote
+  directly, and runs the per-file gates (formatter, complexity, every required compiler) — never
+  configure, clean, `all`, or `ctest`. The old blanket no-build rule guarded a shared build dir that
+  worktree isolation made race-free; what it cost was unexecuted tests (2026-09-07: four of seven
+  defects in one fix round were build- or run-time failures the implementer could not see). The
+  orchestrator then builds incrementally in the existing tree (never clean or reconfigure inside the
+  loop), runs the repo's per-function static checks on new code at this same point, and sends
+  failures back as one batch to the **same** implementer agent via SendMessage — never a fresh launch,
+  which forgets what the last one got wrong. One rebuild per fix-batch; three failed round-trips on
+  the same failure go to the user, and the same gate failing twice on different lines means a rule
+  the implementer doesn't know — write it into the brief before the next batch. Comment-only changes
+  do not need a build at all.
 - **Parallel implementers run in worktree isolation.** PARALLEL-SAFE packages are normally disjoint
   file sets, but the blueprint may instead grant disjoint, append-only ranges within one shared file
   when packages separate along a different axis (declarations / impls / tests). Either way, each
