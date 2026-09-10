@@ -27,7 +27,7 @@ its own finishing skill (the source repo's is named `subtask-done`), step 5 dele
 
 | Preset | Model / effort | Role in the loop |
 |---|---|---|
-| `architect` | fable-5 / high | Step 1 blueprint; step 4 disposition |
+| `architect` | fable-5 / high | Step 1 blueprint review — refines the user's draft, proposes design changes back to the user; step 4 disposition |
 | `architect-v2` | opus / high | Same brief, for plan tiers without Fable access (`opus-architect:`) |
 | `implementer` | sonnet / high | Step 2 code and unit tests; builds its own targets and runs its own test binaries in its tree as self-checks (never configure, clean, `all`, or `ctest`) — the orchestrator builds warm and tests once per round as the evidence run |
 | `logic-auditor` | opus / high | Step 3 adversarial review; delta passes |
