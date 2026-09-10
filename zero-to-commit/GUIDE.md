@@ -91,8 +91,11 @@ Prose instead of a flag is honored — say which flag you read it as.
   defects in one fix round were build- or run-time failures the implementer could not see). The
   orchestrator then builds incrementally in the existing tree (never clean or reconfigure inside the
   loop), runs the repo's per-function static checks on new code at this same point, and sends
-  failures back as one batch. One rebuild per fix-batch; three failed round-trips on the same
-  failure go to the user. Comment-only changes do not need a build at all.
+  failures back as one batch to the **same** implementer agent via SendMessage — never a fresh launch,
+  which forgets what the last one got wrong. One rebuild per fix-batch; three failed round-trips on
+  the same failure go to the user, and the same gate failing twice on different lines means a rule
+  the implementer doesn't know — write it into the brief before the next batch. Comment-only changes
+  do not need a build at all.
 - **Parallel implementers run in worktree isolation.** PARALLEL-SAFE packages are normally disjoint
   file sets, but the blueprint may instead grant disjoint, append-only ranges within one shared file
   when packages separate along a different axis (declarations / impls / tests). Either way, each
