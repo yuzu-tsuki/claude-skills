@@ -22,10 +22,10 @@ exists, otherwise from the bundled defaults in `principles.md`.
 ## Installing
 
 Copy this folder into `~/.claude/skills/` for every session, or into a project's `.claude/skills/`
-for that project only. Nothing else is needed — the skill has no agent presets or commands.
+for that project only. Nothing else is needed.
 
-**Status: not yet run on a real change.** One simple slice does not validate it. Run `plan`, `fix`
-and `finish` on a real slice, then `harvest` on a second repo, before sharing it widely.
+**Status: not yet run on a real change.** One simple change does not validate it. Run `plan`, `fix`
+and `finish` on a real change, then `harvest` on a second repo, before sharing it widely.
 
 ## Modes
 
@@ -78,6 +78,30 @@ P7 filesystem trust          n/a      | change handles no paths
 | `n/a` | Does not apply, with the reason |
 | `deferred` | Not done here — where it is recorded and who owns it |
 | `failed` | Blocks the commit or PR |
+
+## Cost
+
+An estimate, not a measurement: roughly **10–20% more time** on a non-trivial change than the same
+work without the checklist. The per-check figures below were observed in one session.
+
+| Check | Typical cost | What drives it |
+|---|---|---|
+| P4 mutate each changed line | Minutes — 4 mutants in ~2 min, ~80 in a few | One incremental rebuild per compiled mutant; scripts need no build. **The main variable cost** |
+| P1 replay earlier inputs | Under a minute for ~11,000 inputs | Cheap when old versions are scripts; expensive when they need building or deploying |
+| P6 probe the real system | Seconds, or minutes to stand up a scratch database once | Near zero with the real component on hand; hours if the environment must be built |
+| P2 search the defect class | Minutes | Small |
+| P3 re-derive claims | Minutes per PR | Small |
+| `plan` answers | A few lines in the plan | Small |
+| `harvest` | Tens of minutes of reading, plus a large token bill | Once per project, not per change |
+
+- **Small changes pay a larger share.** The per-principle report and the `finish` mutations are a
+  fixed cost that dominates a tiny change.
+- **Where it can blow up.** Slow builds make P4 expensive: group mutants by file and start with the
+  lines behind the PR's headline claims. With no real system for P6, record the assumption as
+  verified against mocks only rather than building infrastructure mid-change.
+- **The payback is unmeasured.** Removing one external review round — a reviewer turnaround, a fix
+  and a full test run — outweighs the checks, but whether the checklist actually removes rounds has
+  not been shown yet.
 
 ## Adapting to another repo
 

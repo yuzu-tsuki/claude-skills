@@ -29,6 +29,7 @@ it is still cheap: `plan` before coding, `fix` for each review finding, `finish`
 Every check ends in an evidence line, never a tick. `harvest` mines a repo's own PR/MR review
 history into a project-specific list.
 
-Invoke it as `/principle-checklist <mode>`. It has not yet been run on a real change.
+Invoke it as `/principle-checklist <mode>`. Estimated to add roughly 10–20% to the time a
+non-trivial change takes, mostly in mutation checks. It has not yet been run on a real change.
 
 Details, modes, and install steps: [`principle-checklist/GUIDE.md`](principle-checklist/GUIDE.md).
